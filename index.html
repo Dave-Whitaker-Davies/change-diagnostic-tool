@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Leadership Response to Change Diagnostic</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px auto; max-width: 900px; line-height: 1.6; }
+    h1, h2 { color: #2a4d69; }
+    .section { margin-bottom: 40px; }
+    label { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; }
+    label span { flex: 1; padding-right: 20px; }
+    input[type="number"] { width: 60px; padding: 5px; font-size: 1em; }
+    button { padding: 10px 20px; font-size: 1em; background: #2a4d69; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    .results { margin-top: 40px; padding: 20px; background: #f4f4f4; border-radius: 8px; }
+  </style>
+</head>
+<body>
+
+<h1>Leadership Response to Change Diagnostic</h1>
+<p><strong>Instructions:</strong> For each statement, rate how true it feels for you right now on a scale from 1 (Not true at all) to 5 (Very true).</p>
+
+<form id="diagnosticForm">
+  <div class="section">
+    <h2>Endings – Letting Go</h2>
+    <label><span>I find it difficult to let go of strategies or ways of working that once brought success.</span><input type="number" name="endings" min="1" max="5" required></label>
+    <label><span>I feel a sense of loss, frustration, or resistance in response to recent or upcoming changes.</span><input type="number" name="endings" min="1" max="5" required></label>
+    <label><span>I often compare current decisions or leadership approaches to how things used to be done.</span><input type="number" name="endings" min="1" max="5" required></label>
+    <label><span>I tend to avoid or delay conversations about the change and its wider implications.</span><input type="number" name="endings" min="1" max="5" required></label>
+    <label><span>I feel uncertain or unsettled about my role and contribution in the new direction.</span><input type="number" name="endings" min="1" max="5" required></label>
+  </div>
+
+  <div class="section">
+    <h2>Neutral Zone – Navigating Uncertainty</h2>
+    <label><span>I feel stuck, in limbo, or unsure about what actions to take next.</span><input type="number" name="neutral" min="1" max="5" required></label>
+    <label><span>I’m waiting for more clarity or direction before I fully engage with the change.</span><input type="number" name="neutral" min="1" max="5" required></label>
+    <label><span>I find myself holding tighter control or micromanaging as a way to manage uncertainty.</span><input type="number" name="neutral" min="1" max="5" required></label>
+    <label><span>I feel disconnected from the broader strategic direction or unsure how I fit into it.</span><input type="number" name="neutral" min="1" max="5" required></label>
+    <label><span>I’m open to experimenting with new approaches, even if the path forward isn’t fully clear.</span><input type="number" name="neutral" min="1" max="5" required></label>
+  </div>
+
+  <div class="section">
+    <h2>New Beginnings – Leading Forward</h2>
+    <label><span>I actively seek to understand and align with the new strategy or vision.</span><input type="number" name="beginnings" min="1" max="5" required></label>
+    <label><span>I communicate a clear, compelling, and positive vision of the future to my team.</span><input type="number" name="beginnings" min="1" max="5" required></label>
+    <label><span>I feel energised and motivated by the possibilities that lie ahead.</span><input type="number" name="beginnings" min="1" max="5" required></label>
+    <label><span>I actively empower others to lead, contribute, and shape the change journey.</span><input type="number" name="beginnings" min="1" max="5" required></label>
+    <label><span>I take ownership of my role in shaping the future and modelling the change I want to see.</span><input type="number" name="beginnings" min="1" max="5" required></label>
+  </div>
+
+  <button type="submit">Submit & View Interpretation</button>
+</form>
+
+<div class="results" id="results"></div>
+
+<script>
+document.getElementById('diagnosticForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const form = new FormData(e.target);
+  let scores = { endings: 0, neutral: 0, beginnings: 0 };
+
+  for (let [key, value] of form.entries()) {
+    scores[key] += parseInt(value);
+  }
+
+  function interpret(score, section) {
+    if (score <= 10) {
+      return {
+        endings: `<strong>Low Endings (5–10):</strong> You’ve largely released the past, which positions you well to embrace change. However, be mindful not to dismiss the value of legacy knowledge. <em>Tip:</em> Reflect briefly on past successes to inform future decisions.`,
+        neutral: `<strong>Low Neutral Zone (5–10):</strong> You’re moving quickly through ambiguity, which can be a strength. But rapid transitions may bypass important reflection. <em>Tip:</em> Pause to engage your team in co-creating new approaches.`,
+        beginnings: `<strong>Low New Beginnings (5–10):</strong> You may be cautious about embracing the new direction. This can create hesitation across your team. <em>Tip:</em> Identify one visible action that signals your commitment to the future.`,
+      }[section];
+    } else if (score <= 18) {
+      return {
+        endings: `<strong>Medium Endings (11–18):</strong> You’re balancing between holding on and letting go. This is a natural part of transition. <em>Tip:</em> Acknowledge what’s ending and create space for dialogue about what it means for your team.`,
+        neutral: `<strong>Medium Neutral Zone (11–18):</strong> You’re navigating uncertainty with some momentum. <em>Tip:</em> Set short-term goals and celebrate small wins to build confidence and clarity.`,
+        beginnings: `<strong>Medium New Beginnings (11–18):</strong> You’re leaning into the future but may still be finding your footing. <em>Tip:</em> Clarify your vision and role-model optimism to accelerate team engagement.`,
+      }[section];
+    } else {
+      return {
+        endings: `<strong>High Endings (19–25):</strong> You may be deeply anchored in past practices or identities. This can limit your strategic agility. <em>Tip:</em> Identify one legacy practice to consciously retire and explain why to your team.`,
+        neutral: `<strong>High Neutral Zone (19–25):</strong> You’re in the thick of transition. This can feel disorienting but is also a space for reinvention. <em>Tip:</em> Increase transparency, share what you know, and empower experimentation.`,
+        beginnings: `<strong>High New Beginnings (19–25):</strong> You’re fully aligned and energised by the new direction. <em>Tip:</em> Use your momentum to support peers who are still navigating endings or uncertainty.`,
+      }[section];
+    }
+  }
+
+  document.getElementById('results').innerHTML = `
+    <h2>Your Results</h2>
+    <p><strong>Endings Score:</strong> ${scores.endings}/25<br>${interpret(scores.endings, 'endings')}</p>
+    <p><strong>Neutral Zone Score:</strong> ${scores.neutral}/25<br>${interpret(scores.neutral, 'neutral')}</p>
+    <p><strong>New Beginnings Score:</strong> ${scores.beginnings}/25<br>${interpret(scores.beginnings, 'beginnings')}</p>
+  `;
+});
+</script>
+
+</body>
+</html>
